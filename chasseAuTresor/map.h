@@ -4,15 +4,14 @@
 #define longeur  4
 
 void drawPlayfield();
-int validImput();
+int validInput();
 void cacherTresor();
 
-extern int cases[largeur * longeur];
-extern int casesJouer[longeur * largeur];
-
-enum casesStatus
+enum class CellType
 {
-	vide,
-	cherché,
-	trouvé,
+	Empty = 0,
+	Treasure,
 };
+
+extern CellType cells[largeur * longeur];
+extern bool cellsExplored[longeur * largeur];

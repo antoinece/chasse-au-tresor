@@ -6,11 +6,16 @@
 
 int main()
 {
+    srand(time(0));
+
     bool treasureFound = false;
-    int cooordonees;
     int nbEssai = 0;
+
+    cacherTresor();
+    cacherTresor();
     cacherTresor();
 
+    bool foundTreasure = false;
     do
     {
         int x;
@@ -18,29 +23,24 @@ int main()
 
         std::cout << "coordnees des recherches ?\n";
         std::cout << "coordonee X entre 1 et " << longeur << "?\n";
-        x = validImput();
+        x = validInput() - 1;
         std::cout << "coordonee Y entre 1 et " << longeur << "?\n";
-        y = validImput();
+        y = validInput() - 1;
 
-        cooordonees = (x - 1) * 4 + (y - 1);
-        if (cases[cooordonees] == 1)
-        {
-            casesJouer[cooordonees] = 2;
-            std::cout << "bravo tu as trouver le tresor\n";
-            drawPlayfield();
-            return 0;
-        }
-        else
-        {
-            casesJouer[cooordonees] = 1;
-        }
+        int cooordonees = x + y * 4;
+        cellsExplored[cooordonees] = true;
+        foundTreasure = cells[cooordonees] == CellType::Treasure;
 
         drawPlayfield();
         nbEssai++;
 
-    } while (nbEssai < 5);
+    } while (nbEssai < 5 && !foundTreasure);
 
-    std::cout << "tu as predu\n";
+    if (foundTreasure) {
+        std::cout << "bravo tu as trouver le Treasure\n";
+    } else {
+        std::cout << "tu as predu\n";
+    }
 }
 
 

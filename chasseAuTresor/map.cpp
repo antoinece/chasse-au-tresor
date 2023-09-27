@@ -2,16 +2,13 @@
 #include "map.h"
 #include <string>
 
-int cases[largeur * longeur];
-int casesJouer[longeur * largeur];
+CellType cells[largeur * longeur];
+bool cellsExplored[longeur * largeur];
 
 void cacherTresor()
 {
-	int cases[largeur * longeur];
-	int r;
-	srand(time(0));
-	r = rand() % (largeur * longeur);
-	cases[r] = 1;
+	int r = rand() % (largeur * longeur);
+	cells[r] = CellType::Treasure;
 }
 
 void drawPlayfield()
@@ -20,63 +17,40 @@ void drawPlayfield()
 	{
 		for (int column = 0; column < 4; column++)
 		{
-			int cases_states = casesJouer[row * 4 + column];
+			CellType cell = cells[row * 4 + column];
+			bool explored = cellsExplored[row * 4 + column];
 
-			if (cases_states == 0)
-			{
+			if (explored) {
+				if (cell == CellType::Empty)
+				{
+					std::cout << "0";
+				}
+				else
+				{
+					std::cout << "X";
+				}
+			}
+			else {
 				std::cout << "-";
 			}
-			else if (cases_states == 1)
-			{
-				std::cout << "0";
-			}
-			else
-			{
-				std::cout << "X";
-			}
+
 		}
 		std::cout << "\n";
 	}
 }
 
-int validImput()
+int validInput()
 {
-	const std::string digits = "1234";
-	std::string imputString;
-	do
-	{
-		std::getline(std::cin, imputString);
-		for (char c : imputString)
-		{
-			if (digits.find(tolower(c)) == std::string::npos)
-			{
-				break;
-			}
-			else
-			{
-				if (imputString == "1")
-				{
-					return 1;
-				}
-				else if (imputString == "2")
-				{
-					return 2;
-				}
-				else if (imputString == "3")
-				{
-					return 3;
-				}
-				else if (imputString == "4")
-				{
-					return 4;
-				}
-				else
-				{
-					break;
-				}
-			}
+	while (1) { // boucle infinie. On sort avec le return.
+		std::string inputString;
+		std::getline(std::cin, inputString);
+		bool tooLong = inputString.length() != 1;
+		char c = inputString[0]; // take the fist character. If the string is empty, this will take the zero character that terminates the string.
+		if (tooLong || c < '1' || c > '4') {
+			std::cout << "le nombre doit etre compris entre 1 et 4\n";
+		} else {
+			return c - '0';
 		}
-		std::cout << "le nombre doit etre compris entre 1 et 4\n";
-	} while (1<2);
+	}
 }
 
